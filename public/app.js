@@ -4,6 +4,17 @@ var metrics;
 var WINDOW_SIZE = 60;
 var WINDOW_OFFSET = 10;
 
+var colors = ["#CAE583",
+              "#5E3EA0",
+              "#C53918",
+              "#203A23",
+              "#4AA4B6",
+              "#751F3F",
+              "#F2B5E9",
+              "#7DE115",
+              "#F47860",
+              "#1EB42C"]
+
 Date.timestamp = function() { return Math.round(Date.now()/1000); };
 
 $(function() {
@@ -59,14 +70,29 @@ function updateValues() {
       window[display](metrics[type], this);
     }
   });
+
+  $(".dyno").each(function() {
+    var type = $(this).data("type");
+    var display = $(this).data("display");
+    window[display](metrics[type], this);
+  });
 }
 
 ///////////////////////////////////////////
 // Measurements
 ///////////////////////////////////////////
 
-function table(items, elem) {
-  setTable(elem, items)
+function actual(items, elem) {
+  if (items != undefined) {
+    item = items[items.length - 1]
+    //This is updating this div once for each item in items. Dumb
+    setText($("#memory_"+item[0]),item[1])
+  }
+  
+}
+
+function bar(items, elem) {
+  setBar(elem, items)
 }
 
 function sum(items, elem) {
@@ -135,56 +161,38 @@ function percentile_index(items, percentile) {
 ///////////////////////////////////////////
 
 function showDefault(elem) {
-  $(".data", elem).empty().text("No data")
+  $(".data", elem).empty().text("--")
 }
 
-function setTable(elem, value) {
-  // $(".data", elem).empty()
-  // var html = "<table class='request_table'>"
-  // for (var i = 0, len = value.length; i < len; ++i) {
-  //     service = value[i][2]
-  //     html += '<tr>';
-  //     for (var j = 0, rowLen = value[i].length; j < rowLen; ++j ) {
-  //         html += '<td>' + value[i][j] + '</td>';
-  //     }
-  //     html += "</tr>";
-  // }
-  // html += '</table>';
-  // $(html).appendTo($(".data", elem));
-
-  colors = ["#B44F70","#94C34F","#97C3AA","#B759C7","#4E4737","#C56E3B","#7B7CB2","#21314A",
-              "#F5683E",
-              "#A9FAFB",
-              "#FC479A",
-              "#2287DC",
-              "#F5F5A2",
-              "#781910","#B3876F"]
+function setBar(elem, value) {
 
   //each dyno gets their own progressBars[dyno_num]
   //progressBars is an array of html strings
   var progressBars = new Array()
 
-  //$(".progress-bar-container", elem).empty()
+  //build brogress bars
   progessBarHtml = "<div class='progress' id='progress-bar'>"
   for (var i = 0, len = value.length; i < len; ++i) {
     dyno = value [i][0]
+    path = value [i][1]
     service = value[i][2]
     if (progressBars[dyno] == undefined) {
       progressBars[dyno] = ""
     }
-    progressBars[dyno] += "<div class='progress-bar' style='background-color:"+colors[service%14]+";width:"+(service * (1140/30000.0))+"px'></div>"
+    tooltipText = path + " " + service + "ms"
+    progressBars[dyno] += "<div class='progress-bar' style='background-color:"+colors[service%10]+";width:"+(service * (1140/30000.0))+"px' data-toggle='tooltip' data-placement='top' title='"+tooltipText+"'></div>"
   } 
   progessBarHtml += "</div>" 
-  //$(progessBarHtml).appendTo($(".progress-bar-container", elem));
 
-  //console.log(progressBars)
-
+  //set the progress bars
   $.each($(".progress"), function(index) {
     $(this).empty()
     if (progressBars[index+1] != undefined) { 
       $(this).html(progressBars[index+1])
     }
   });
+
+  $('.progress-bar').tooltip({trigger: "click"})
 }
 
 function setText(elem, value) {

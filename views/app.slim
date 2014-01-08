@@ -6,7 +6,7 @@ javascript:
 h1.page-title= params[:id]
 
 #metrics.row
-  .col.col-md-2
+  .col.col-md-3
     .stat
       .metric*data(display:"sum",type:"requests",label:" rpm")
         h4
@@ -14,7 +14,7 @@ h1.page-title= params[:id]
         h3.value
           .data 0
 
-  .col.col-md-2
+  .col.col-md-3
     .stat
       .metric*data(display:"median",type:"response_time",label:"ms")
         h4
@@ -22,7 +22,7 @@ h1.page-title= params[:id]
         h3.value
           .data 0
 
-  .col.col-md-2
+  .col.col-md-3
     .stat
       .metric*data(display:"perc95",type:"response_time",label:"ms")
         h4
@@ -30,7 +30,7 @@ h1.page-title= params[:id]
         h3.value
           .data 0
 
-  .col.col-md-2
+  .col.col-md-3
     .stat
       .metric*data(display:"max",type:"response_time",label:"ms")
         h4
@@ -38,38 +38,47 @@ h1.page-title= params[:id]
         h3.value
           .data 0
 
-  .col.col-md-2
-    .stat
-      .metric*data(display:"average",type:"memory_usage",units:1,label:"MB")
-        h4 Avg. Mem.
-        h3.value
-          span.data 0
-
-  .col.col-md-2
-    .stat
-      .metric*data(display:"max",type:"memory_usage",units:1,label:"MB")
-        h4 Max. Mem.
-        h3.value
-          span.data 0
-
-.metric*data(display:"table",type:"request",label:"")
+.metric*data(display:"bar",type:"request",label:"")
   h2
-    | Requests
-    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#about">About</button>
-  - (1..@web_processes).each do |process_num|
-    .progress-bar-container
-      <div class="progress" id="progress-bar#{process_num}">
-      </div>
+    | Dyno Activity
+  table.table.table-condensed
+    tr
+      th Dyno
+      th Mem
+      th
+    - (1..@web_processes).each do |process_num|
+      tr
+        td.col-md-1
+          =process_num
+        td.col-md-1.dyno*data(display:"actual",type:"dyno_and_memory",label:"") id="memory_#{process_num}"
+          .data
+        td
+          .progress-bar-container
+            <div class="progress dyno-progress" id="progress-bar#{process_num}"></div>
 
 <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Dyno Activity</h4>
+        <h4 class="modal-title" id="myModalLabel">About Bunyan</h4>
       </div>
       <div class="modal-body">
-        This is a visualization of the past minute of activity. <b>This is not a live look at your dyno queue.</b>
+        <p>
+          | Bunyan started with me hacking on Heroku's log2viz and I just couldn't stop. Heroku didn't include any individual dyno viz in their original app which I saw as a pretty glaring omission.
+        </p>
+        <p>
+          | Stats displayed on this page are aggregated and computed from the last minute of logs.
+        </p>
+        <h4>Dyno Activity</h4>
+        <p>
+          | Dyno Activity is a visualization of the past minute of activity. <b>This is not a live look at your dyno queue.</b> Rather, it is a look at the past 1 minute.
+        </p>
+        <p>
+          | There's currently no way to put gaps between the requests. So, the requests appear to have been processed immediately after each other, but this is likely not the case.
+        <p>
+          | Dyno Activity does not yet consider if you are more than one process per dyno (using Unicorn, for instance)
+        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
