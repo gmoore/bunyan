@@ -189,7 +189,7 @@ class App < Sinatra::Base
                 "requests"        => 1,
                 "response_time"   => data["service"].to_i,
                 "status"          => "#{data["status"][0]}xx",
-                "request"         => [data['dyno'], data['path'], data['service']]
+                "request"         => [data['dyno'].split(".")[1], data['path'], data['service'][0..-3]]
               }
               parsed_line["error"] = data["code"] if data["code"]
             elsif ps == "web" && data.key?("sample#memory_total")

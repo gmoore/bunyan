@@ -1,9 +1,23 @@
-@import "compass";
-@import "compass/reset";
+body {
+  font-family: 'Oxygen', sans-serif;
+  background-color: #fefefe
+}
 
-@import "config";
-@import "base";
-@import "layout";
-@import "tooltips";
-@import "metrics";
-@import "errors";
+#metrics {
+  text-align: center;
+  .stat {
+    margin-bottom: 4em;
+    background-color: #eaf1f1;
+    border: 1px solid rgba(0,0,0,0.1);
+    h3 {
+      margin-top : 5px;
+    }
+    h4 {
+      font-size: 12px;
+    }
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oxygen', sans-serif;
+}

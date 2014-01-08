@@ -1,15 +1,15 @@
-# log2viz
+# bunyan
 
-http://log2viz.herokuapp.com/
+A Realtime Heroku log visualizer.
 
-Realtime analysis of your Heroku app logs.
+This app is derived from Heroku's log2viz: https://github.com/heroku/log2viz/
 
 ## Installing Locally
 
 ### Requirements
 
 * Heroku Toolbelt (https://toolbelt.heroku.com/)
-* Ruby 1.9.3
+* Ruby 2.0.0
 * bundler
 
 ### Get the code

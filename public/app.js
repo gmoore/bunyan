@@ -139,19 +139,52 @@ function showDefault(elem) {
 }
 
 function setTable(elem, value) {
-  $(".data", elem).empty()
-  var html = "<table class='request_table'>"
-  for (var i = 0, len = value.length; i < len; ++i) {
-      html += '<tr>';
-      for (var j = 0, rowLen = value[i].length; j < rowLen; ++j ) {
-          html += '<td>' + value[i][j] + '</td>';
-      }
-      html += "</tr>";
-  }
-  html += '</table>';
+  // $(".data", elem).empty()
+  // var html = "<table class='request_table'>"
+  // for (var i = 0, len = value.length; i < len; ++i) {
+  //     service = value[i][2]
+  //     html += '<tr>';
+  //     for (var j = 0, rowLen = value[i].length; j < rowLen; ++j ) {
+  //         html += '<td>' + value[i][j] + '</td>';
+  //     }
+  //     html += "</tr>";
+  // }
+  // html += '</table>';
+  // $(html).appendTo($(".data", elem));
 
-  console.log(value)
-  $(html).appendTo($(".data", elem));
+  colors = ["#B44F70","#94C34F","#97C3AA","#B759C7","#4E4737","#C56E3B","#7B7CB2","#21314A",
+              "#F5683E",
+              "#A9FAFB",
+              "#FC479A",
+              "#2287DC",
+              "#F5F5A2",
+              "#781910","#B3876F"]
+
+  //each dyno gets their own progressBars[dyno_num]
+  //progressBars is an array of html strings
+  var progressBars = new Array()
+
+  //$(".progress-bar-container", elem).empty()
+  progessBarHtml = "<div class='progress' id='progress-bar'>"
+  for (var i = 0, len = value.length; i < len; ++i) {
+    dyno = value [i][0]
+    service = value[i][2]
+    if (progressBars[dyno] == undefined) {
+      progressBars[dyno] = ""
+    }
+    progressBars[dyno] += "<div class='progress-bar' style='background-color:"+colors[service%14]+";width:"+(service * (1140/30000.0))+"px'></div>"
+  } 
+  progessBarHtml += "</div>" 
+  //$(progessBarHtml).appendTo($(".progress-bar-container", elem));
+
+  //console.log(progressBars)
+
+  $.each($(".progress"), function(index) {
+    $(this).empty()
+    if (progressBars[index+1] != undefined) { 
+      $(this).html(progressBars[index+1])
+    }
+  });
 }
 
 function setText(elem, value) {

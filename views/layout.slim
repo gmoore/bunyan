@@ -1,25 +1,26 @@
 doctype html
 html
   head
-    title= @title ? "log2viz | #{@title}" : "log2viz"
+    title= "Bunyan"
+    link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
+    link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Oxygen:400,300"
     link rel="stylesheet" type="text/css" href="/stylesheets/styles.css"
     script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+    script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"
     script src="/underscore.js"
     script src="/app.js"
   body
-    #wrapper
-      header
-        #title
-          h4
-            a href="/" log2viz
-          h5 an experiment in realtime analysis from last 60 seconds of app logs
-        ul#nav
-          li #{@user["email"]}
+    .container
+
+      .navbar.navbar-default
+        a.navbar-brand href="/" Bunyan
+        .navbar-text #{@user["email"]}
+        ul.nav.navbar-nav
           li
             a href="/" Apps
           li
             a href="/auth/sso-logout" Logout
+      .container
+        == slim :"partials/_flash", layout: false
 
-      == slim :"partials/_flash", layout: false
-
-      == yield
+        == yield

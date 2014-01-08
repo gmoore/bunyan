@@ -5,65 +5,75 @@ javascript:
 
 h1.page-title= params[:id]
 
-#metrics
-  .col
-    .metric*data(display:"sum",type:"requests",label:" rpm")
-      h2
-        | Throughput
-        == tooltip "Web requests processed in the last minute."
-      h3.value
-        .data 0
+#metrics.row
+  .col.col-md-2
+    .stat
+      .metric*data(display:"sum",type:"requests",label:" rpm")
+        h4
+          | Throughput
+        h3.value
+          .data 0
 
-    h2 Response Time
-    .metric*data(display:"median",type:"response_time",label:"ms")
-      h3
-        | Median
-        == tooltip "Median time spent in the router and the dyno combined. <a href='http://www.purplemath.com/modules/meanmode.htm'>(Note this is a different calculation than average/mean response time.)</a>"
-      h3.value
-        .data 0
-    .metric*data(display:"perc95",type:"response_time",label:"ms")
-      h3
-        | 95th Percentile
-        == tooltip "The slowest 5% of responses. May be caused by long processing times (like a heavy database query) or by queueing behind other requests."
-      h3.value
-        .data 0
-  .col
-    h2 
-      | Memory Usage
-      == tooltip "Memory use across all web dynos. Enable <a href='https://devcenter.heroku.com/articles/log-runtime-metrics'><code>log-runtime-metrics</code> labs flag</a> to add memory usage to the app’s logs."
+  .col.col-md-2
+    .stat
+      .metric*data(display:"median",type:"response_time",label:"ms")
+        h4
+          | Median Resp.
+        h3.value
+          .data 0
 
-    .metric*data(display:"average",type:"memory_usage",units:1,label:"MB of #{@web_memory}")
-      h3 Average
-      h3.value
-        span.data 0
-    .metric*data(display:"max",type:"memory_usage",units:1,label:"MB of #{@web_memory}")
-      h3 Maximum
-      h3.value
-        span.data 0
+  .col.col-md-2
+    .stat
+      .metric*data(display:"perc95",type:"response_time",label:"ms")
+        h4
+          | Perc95 Resp.
+        h3.value
+          .data 0
 
-  .col
-    .metric*data(display:"counter",type:"status",default:["2xx","3xx","4xx","5xx"])
-      h2
-        | Response Status
-        == tooltip "Breakdown of HTTP status codes returned by the app. A high rate of 5xx (especially 500s and 503s) may indicate a problem."
-      ul.data.column-list
-    .metric*data(display:"counter",type:"error")
-      h2
-        | Heroku Error Code
-        == tooltip "Breakdown of <a href='https://devcenter.heroku.com/articles/error-codes'>Heroku error codes</a>, such as H12 Request timeout or R10 Boot timeout. A high rate of errors may indicate a problem."
-      ul.data.column-list
+  .col.col-md-2
+    .stat
+      .metric*data(display:"max",type:"response_time",label:"ms")
+        h4
+          | Max Resp.
+        h3.value
+          .data 0
 
-.metric*data(display:"activity",type:"response_time",label:"",procs:@web_processes)
-  h2
-    | Web Dyno Activity
-    == tooltip "Rough visualization of web dyno activity. A wider bar means more time spent processing requests."
-  .activity
-    h3.value.data
-  p.dynos #{@web_processes} web #{pluralize(@web_processes, "process", "processes")} (#{@ps} #{pluralize(@ps, "dyno", "dynos")} x #{@concurrency} #{pluralize(@concurrency, "process", "processes")} per dyno)
+  .col.col-md-2
+    .stat
+      .metric*data(display:"average",type:"memory_usage",units:1,label:"MB")
+        h4 Avg. Mem.
+        h3.value
+          span.data 0
+
+  .col.col-md-2
+    .stat
+      .metric*data(display:"max",type:"memory_usage",units:1,label:"MB")
+        h4 Max. Mem.
+        h3.value
+          span.data 0
 
 .metric*data(display:"table",type:"request",label:"")
   h2
     | Requests
-    == tooltip "A list of requests in the last minute"
-  .activity
-    h3.value.data
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#about">About</button>
+  - (1..@web_processes).each do |process_num|
+    .progress-bar-container
+      <div class="progress" id="progress-bar#{process_num}">
+      </div>
+
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Dyno Activity</h4>
+      </div>
+      <div class="modal-body">
+        This is a visualization of the past minute of activity. <b>This is not a live look at your dyno queue.</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
