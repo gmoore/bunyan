@@ -29,7 +29,7 @@ $ cp .env.sample .env
 
 When registering the client you get an OAuth client id and secret. Add these as `HEROKU_ID` and `HEROKU_SECRET` environment variables to your application’s `.env`.
 
-**Note that Heroku's OAuth setup provide the wrong OAUTH env var names.** Heroku provides `HEROKU_OAUTH_ID` and `HEROKU_OAUTH_SECRET` These are incorrect. Rename them to `HEROKU_ID` and `HEROKU_SECRET` before attemptign to authorize your app.
+**Note that Heroku's OAuth setup provides the wrong OAUTH env var names.** Heroku provides `HEROKU_OAUTH_ID` and `HEROKU_OAUTH_SECRET` These are incorrect. Rename them to `HEROKU_ID` and `HEROKU_SECRET` before attemptign to authorize your app.
 
 ### Start the server
 
