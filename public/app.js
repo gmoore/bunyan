@@ -180,7 +180,7 @@ function setBar(elem, value) {
       progressBars[dyno] = ""
     }
     tooltipText = path + " " + service + "ms"
-    progressBars[dyno] += "<div class='progress-bar' style='background-color:"+colors[service%10]+";width:"+(service * (1140/30000.0))+"px' data-toggle='tooltip' data-placement='top' title='"+tooltipText+"'></div>"
+    progressBars[dyno] += "<div class='progress-bar' style='background-color:"+colors[service%10]+";width:"+(service * (1140/30000.0))+"px' data-request='"+tooltipText+"'></div>"
   } 
   progessBarHtml += "</div>" 
 
@@ -192,7 +192,11 @@ function setBar(elem, value) {
     }
   });
 
-  $('.progress-bar').tooltip({trigger: "click"})
+  $.each($(".progress-bar"), function(index) {
+		$(this).click(function () {
+			$('#request-display').text($(this).attr('data-request'))
+		})
+	})
 }
 
 function setText(elem, value) {
