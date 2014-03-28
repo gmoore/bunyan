@@ -97,6 +97,10 @@ class App < Sinatra::Base
       count == 1 ? singular : plural
     end
 
+    def number_to_mb(number)
+      number / 1048576
+    end
+
     def number_to_human_size(number, precision = 2)
       number = begin
         Float(number)
@@ -151,6 +155,7 @@ class App < Sinatra::Base
 
   get "/app/:id/logs", provides: 'text/event-stream' do
     url = log_url(params[:id])
+    @web_memory = number_to_mb(web_size(params[:id]) * BASE_DYNO_MEMORY)
 
     stream :keep_open do |out|
       # Keep connection open on cedar
@@ -194,7 +199,7 @@ class App < Sinatra::Base
             elsif ps == "web" && data.key?("sample#memory_total")
               dyno = (data["source"].start_with?("web") ? data["source"].split(".")[1] : nil)
               parsed_line = {
-                "dyno_and_memory" => [dyno,data["sample#memory_total"].to_i],
+                "dyno_and_memory" => [dyno,data["sample#memory_total"].to_i,@web_memory],
                 "memory_usage"    => data["sample#memory_total"].to_i
               }
             end

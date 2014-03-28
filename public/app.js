@@ -91,6 +91,22 @@ function actual(items, elem) {
   
 }
 
+function actual_with_limit(items, elem) {
+  if (items != undefined) {
+    item = items[items.length - 1]
+
+    limit = item[2]
+    el = $("#memory_"+item[0])
+
+    //This is updating this div once for each item in items. Dumb
+    setText(el,item[1])
+    if (item[1] > limit) {
+      $(".data", el).addClass("danger")
+    }
+  }
+  
+}
+
 function bar(items, elem) {
   setBar(elem, items)
 }

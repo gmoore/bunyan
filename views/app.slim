@@ -50,7 +50,7 @@ h1.page-title= params[:id]
       tr
         td.col-md-1
           =process_num
-        td.col-md-1.dyno*data(display:"actual",type:"dyno_and_memory",label:"") id="memory_#{process_num}"
+        td.col-md-1.dyno*data(display:"actual_with_limit",type:"dyno_and_memory",label:"") id="memory_#{process_num}"
           .data
         td
           .progress-bar-container
