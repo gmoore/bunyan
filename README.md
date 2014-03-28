@@ -4,6 +4,8 @@ A Realtime Heroku log visualizer.
 
 This app is derived from Heroku's log2viz: https://github.com/heroku/log2viz/
 
+See Bunyan running at http://bunyan.herokuapp.com
+
 ## Installing Locally
 
 ### Requirements
