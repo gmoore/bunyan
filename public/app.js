@@ -102,6 +102,8 @@ function actual_with_limit(items, elem) {
     setText(el,item[1])
     if (item[1] > limit) {
       $(".data", el).addClass("danger")
+    } else {
+      $(".data", el).removeClass("danger")
     }
   }
   
