@@ -72,7 +72,11 @@ class App < Sinatra::Base
     def web_size(name)
       formation = api.get_formation(name).body
       web = formation.select{|f| f["type"] == "web" }.first || {}
-      size = web.fetch("size", 1)
+
+      #Heroku reports dyno size as "1X", as well as "Standard-1X"
+      # so we strip all A-Z from the string, hopefully leaving us with
+      # an integer dyno size
+      size = web.fetch("size", 1).gsub(/\D/, '')
       size.to_i
     rescue Heroku::API::Errors::Forbidden, Heroku::API::Errors::NotFound
       halt(404)

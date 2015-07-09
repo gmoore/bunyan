@@ -46,7 +46,7 @@ h1.page-title= params[:id]
       th Dyno
       th Mem
       th#request-display
-    - (1..@web_processes).each do |process_num|
+    - (1..@ps).each do |process_num|
       tr
         td.col-md-1
           =process_num

@@ -11,7 +11,7 @@ See Bunyan running at http://bunyan.herokuapp.com
 ### Requirements
 
 * Heroku Toolbelt (https://toolbelt.heroku.com/)
-* Ruby 2.0.0
+* Ruby 2.1.5
 * bundler
 
 ### Get the code
