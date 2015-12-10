@@ -70,6 +70,7 @@ class App < Sinatra::Base
     end
 
     def dyno_type_to_memory(dyno_type)
+      case dyno_type
       when 'Performance-L'
         BASE_DYNO_MEMORY * 24
       when 'Performance-M'
