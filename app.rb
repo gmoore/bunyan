@@ -69,15 +69,29 @@ class App < Sinatra::Base
       (params[:concurrency] || 1).to_i
     end
 
+    def dyno_type_to_memory(dyno_type)
+      when 'Performance-L'
+        BASE_DYNO_MEMORY * 24
+      when 'Performance-M'
+        BASE_DYNO_MEMORY * 10
+      when /2X/
+        BASE_DYNO_MEMORY * 2
+      when /1X/ 
+        BASE_DYNO_MEMORY * 1
+      when 'Hobby'
+        BASE_DYNO_MEMORY * 1
+      else
+        0
+      end
+    end
+
     def web_size(name)
       formation = api.get_formation(name).body
       web = formation.select{|f| f["type"] == "web" }.first || {}
 
-      #Heroku reports dyno size as "1X", as well as "Standard-1X"
-      # so we strip all A-Z from the string, hopefully leaving us with
-      # an integer dyno size
-      size = web.fetch("size", 1).gsub(/\D/, '')
-      size.to_i
+      size = web.fetch("size", 1)
+      puts size
+      dyno_type_to_memory(size)
     rescue Heroku::API::Errors::Forbidden, Heroku::API::Errors::NotFound
       halt(404)
     end
