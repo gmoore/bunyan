@@ -11,7 +11,7 @@ See Bunyan running at http://bunyan.herokuapp.com
 ### Requirements
 
 * Heroku Toolbelt (https://toolbelt.heroku.com/)
-* Ruby 2.1.5
+* Ruby 2.2.2
 * bundler
 
 ### Get the code
@@ -69,5 +69,9 @@ $ git push heroku master
 Visit your app at https://mybunyan.herokuapp.com
 
 ## Meta
+
+The app asks for read and write permission on your Heroku repos. There's no reason why the app needs write permission so I'm going to figure out how to eliminate that from the permission list. 
+
+##LICENSE 
 
 Released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
